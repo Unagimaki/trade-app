@@ -2,9 +2,9 @@ import type { RootState } from "@/app/store";
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 export interface SettingsState {
-  initialBalance: number; // напр. 1000
+  initialBalance: number; 
   riskPercent: number;    
-  plannedRR: number;      // напр. 2
+  plannedRR: number;      
 }
 
 const initialState: SettingsState = {

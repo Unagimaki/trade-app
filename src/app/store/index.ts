@@ -6,7 +6,7 @@ import { useDispatch, useSelector, type TypedUseSelectorHook } from "react-redux
 export const store = configureStore({
     reducer: {
         settings: settingsReducer,
-        // trades: tradesReducer,
+        trades: tradesReducer,
     }
 })
 
