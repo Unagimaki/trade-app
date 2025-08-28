@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import settingsReducer from "@/entities/settings/model/slice";
+import tradesReducer from "@/entities/trade/model/slice";
 import { useDispatch, useSelector, type TypedUseSelectorHook } from "react-redux";
 
 

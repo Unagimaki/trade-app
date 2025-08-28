@@ -25,3 +25,6 @@ export const tradesListSlice = createSlice({
         }
     },   
 })
+
+export const { addTrade, removeTrade, clearAll } = tradesListSlice.actions;
+export default tradesListSlice.reducer;
