@@ -3,6 +3,6 @@ export type Trade = {
     date: string;
     type: "win" | "loss" | "break-even";
     direction: "long" | "short";
-    rr: number; // риск-ревард, напр. 2
-    risk: number; // сумма риска, напр. 10
+    rr: number; 
+    risk: number; 
 }
