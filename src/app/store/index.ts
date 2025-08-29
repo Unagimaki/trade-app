@@ -11,6 +11,11 @@ export const store = configureStore({
     }
 })
 
+// store.subscribe(() => {
+//     console.log(`Изменен риск ${store.getState().settings.riskPercent}`);
+//     console.log(`Изменен рр ${store.getState().settings.plannedRR}`);
+// })
+
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
