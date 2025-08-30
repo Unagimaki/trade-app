@@ -79,11 +79,12 @@ export default function TradeItem({ trade, index }: { trade: Trade; index: numbe
   };
 
   return (
-    <Card className="rounded-2xl">
+    <Card className=".neo-card rounded-2xl">
       <CardHeader className="flex-row items-center justify-between space-y-0">
         <CardTitle className="text-base">Сделка {index}</CardTitle>
         <div className="flex items-center gap-2">
           <div className="text-xs text-muted-foreground">{formatDate(trade.date)}</div>
+          <Button variant="neo" size="sm" onClick={() => dispatch(removeTrade(trade.id))}>
           <Button
             variant="outline"
             size="sm"

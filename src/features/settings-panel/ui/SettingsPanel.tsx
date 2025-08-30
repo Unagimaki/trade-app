@@ -95,6 +95,7 @@ export default function SettingsPanel() {
             <Input
               id="riskPercent"
               type="number"
+              className="neo-input"
               min={0}
               max={100}
               step={1}
@@ -108,6 +109,7 @@ export default function SettingsPanel() {
               id="plannedRR"
               type="number"
               step="0.1"
+              className="neo-input"
               min={0.1}
               value={plannedRR}
               onChange={onRRChange}
@@ -117,13 +119,18 @@ export default function SettingsPanel() {
 
         {/* Действия со сделками */}
         <div className="flex flex-wrap gap-2">
-          <Button variant="outline" onClick={onAddLoss}>Добавить убыток</Button>
-          <Button variant="outline" onClick={onAddWin}>Добавить прибыль</Button>
+          <Button variant="neo" onClick={onAddLoss}>Добавить убыток</Button>
+          <Button variant="neo" onClick={onAddWin}>Добавить прибыль</Button>
           <div className="grow" />
+            <Button variant="neo" onClick={() => dispatch(clearAll())}>
+              Очистить все сделки
+            </Button>
+          </div>
           <Button variant="outline" onClick={() => dispatch(clearAll())}>
             Очистить все сделки
           </Button>
         </div>
+
       </CardContent>
     </Card>
   );

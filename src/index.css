@@ -1,3 +1,13 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import './styles/neumorphism.css';
 
+body {
+    background-color: #e0e5ec;
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
+}
+
+html {
+    overflow-y: scroll;
+}
