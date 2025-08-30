@@ -31,11 +31,9 @@ function fileToBase64(file: File): Promise<string> {
     const reader = new FileReader();
     reader.onload = () => resolve(String(reader.result));
     reader.onerror = () => reject(reader.error);
-    reader.readAsDataURL(file); // "data:image/jpeg;base64,...."
+    reader.readAsDataURL(file);
   });
 }
-
-
 
 export default function TradeItem({ trade, index }: { trade: Trade; index: number }) {
   const dispatch = useAppDispatch();
@@ -50,7 +48,6 @@ export default function TradeItem({ trade, index }: { trade: Trade; index: numbe
     const f = e.target.files?.[0];
     if (!f) return;
 
-    // Валидируем тип/размер по желанию
     if (!f.type.startsWith("image/")) {
       alert("Выберите изображение.");
       e.target.value = "";
@@ -69,7 +66,6 @@ export default function TradeItem({ trade, index }: { trade: Trade; index: numbe
       console.error(err);
       alert("Не удалось прочитать файл.");
     } finally {
-      // Сброс input, чтобы повторный выбор того же файла сработал
       e.target.value = "";
     }
   };
@@ -79,17 +75,12 @@ export default function TradeItem({ trade, index }: { trade: Trade; index: numbe
   };
 
   return (
-    <Card className=".neo-card rounded-2xl">
+    <Card className="neo-card rounded-2xl">
       <CardHeader className="flex-row items-center justify-between space-y-0">
         <CardTitle className="text-base">Сделка {index}</CardTitle>
         <div className="flex items-center gap-2">
           <div className="text-xs text-muted-foreground">{formatDate(trade.date)}</div>
           <Button variant="neo" size="sm" onClick={() => dispatch(removeTrade(trade.id))}>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => dispatch(removeTrade(trade.id))}
-          >
             Удалить
           </Button>
         </div>
@@ -128,14 +119,12 @@ export default function TradeItem({ trade, index }: { trade: Trade; index: numbe
         </div>
 
         {/* Блок: Скриншот */}
-
         <div className="mt-3 flex items-center gap-2 text-sm">
           <span className="text-muted-foreground select-none flex items-center gap-1">
             {trade.img ? <span aria-hidden="true">📷</span> : null}
             <span>Скриншот</span>
           </span>
 
-          {/* кнопка "+" */}
           <Button
             size="sm"
             variant="outline"
@@ -146,7 +135,6 @@ export default function TradeItem({ trade, index }: { trade: Trade; index: numbe
             +
           </Button>
 
-          {/* 👁 показываем только если есть картинка */}
           {trade.img && (
             <Button
               size="sm"
@@ -160,7 +148,6 @@ export default function TradeItem({ trade, index }: { trade: Trade; index: numbe
             </Button>
           )}
 
-          {/* "×" удаление */}
           {trade.img ? (
             <Button
               size="sm"
