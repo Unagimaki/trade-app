@@ -41,5 +41,10 @@ export default function TradesList() {
         ))}
       </CardContent>
     </Card>
+    <div className="space-y-7">
+      {trades.map((t, index) => (
+        <TradeItem key={t.id} trade={t} index={trades.length - index} />
+      ))}
+    </div>
   );
 }

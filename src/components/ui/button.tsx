@@ -24,7 +24,11 @@ const buttonVariants = cva(
         ghost:
           "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 hover:scale-[1.02] active:scale-[0.98]",
         link:
-          "text-primary underline-offset-4 hover:underline", // без scale для ссылок
+          "text-primary underline-offset-4 hover:underline",
+        neo: 
+          "neo-button text-foreground font-medium " +
+          "hover:neo-button-hover active:neo-button-active " +
+          "disabled:neo-button-disabled",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",
