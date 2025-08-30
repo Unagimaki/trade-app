@@ -35,16 +35,11 @@ export default function TradesList() {
           >
             <TradeItem 
               trade={trade} 
-              index={trades.length - index} // Сохраняем проп index
+              index={trades.length - index}
             />
           </div>
         ))}
       </CardContent>
     </Card>
-    <div className="space-y-7">
-      {trades.map((t, index) => (
-        <TradeItem key={t.id} trade={t} index={trades.length - index} />
-      ))}
-    </div>
   );
 }

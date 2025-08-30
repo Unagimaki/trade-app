@@ -122,15 +122,10 @@ export default function SettingsPanel() {
           <Button variant="neo" onClick={onAddLoss}>Добавить убыток</Button>
           <Button variant="neo" onClick={onAddWin}>Добавить прибыль</Button>
           <div className="grow" />
-            <Button variant="neo" onClick={() => dispatch(clearAll())}>
-              Очистить все сделки
-            </Button>
-          </div>
-          <Button variant="outline" onClick={() => dispatch(clearAll())}>
+          <Button variant="neo" onClick={() => dispatch(clearAll())}>
             Очистить все сделки
           </Button>
         </div>
-
       </CardContent>
     </Card>
   );
