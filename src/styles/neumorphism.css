@@ -1,0 +1,111 @@
+/* src/styles/neumorphism.css */
+.neo-card {
+    border-radius: 16px;
+    background: #e0e5ec;
+    box-shadow:
+        8px 8px 16px #c1c6cd,
+        -8px -8px 16px #ffffff;
+}
+
+.neo-button {
+    border-radius: 12px;
+    background: #e0e5ec;
+    box-shadow:
+        5px 5px 10px #c1c6cd,
+        -5px -5px 10px #ffffff;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.neo-button:hover {
+    box-shadow:
+        3px 3px 6px #c1c6cd,
+        -3px -3px 6px #ffffff;
+}
+
+.neo-button:active {
+    box-shadow:
+        inset 3px 3px 6px #c1c6cd,
+        inset -3px -3px 6px #ffffff;
+}
+
+.neo-input {
+    border-radius: 12px;
+    background: #e0e5ec;
+    box-shadow:
+        inset 3px 3px 6px #c1c6cd,
+        inset -3px -3px 6px #ffffff;
+    border: none;
+    padding: 0.5rem 1rem;
+}
+
+/* src/styles/neo.css */
+/* src/styles/neo.css */
+@layer components {
+    .neo-button {
+        border-radius: 12px;
+        background: #e0e5ec;
+        border: none;
+        transition: all 0.2s ease-in-out;
+        /* Внешняя тень - кнопка "выпуклая" */
+        box-shadow:
+            5px 5px 10px #c1c6cd,
+            -5px -5px 10px #ffffff;
+    }
+
+    .neo-button:hover {
+        /* При наведении - тени становятся мягче */
+        box-shadow:
+            3px 3px 6px #c1c6cd,
+            -3px -3px 6px #ffffff;
+        transform: translateY(1px);
+    }
+
+    .neo-button:active {
+        /* При нажатии - кнопка "впадает" */
+        box-shadow:
+            inset 3px 3px 6px #c1c6cd,
+            inset -3px -3px 6px #ffffff;
+        transform: translateY(2px);
+        background: linear-gradient(145deg, #d1d9e6, #ffffff);
+    }
+
+    .neo-button:disabled {
+        box-shadow: none;
+        background: #f0f0f0;
+        transform: none;
+    }
+    
+}
+
+/* src/styles/neo.css */
+@layer components {
+
+    /* Усиливаем селекторы и добавляем !important */
+    input.neo-input.neo-input {
+        border-radius: 12px !important;
+        background: #e0e5ec !important;
+        border: none !important;
+        transition: all 0.2s ease !important;
+        box-shadow:
+            5px 5px 10px #c1c6cd,
+            -5px -5px 10px #ffffff !important;
+    }
+
+    input.neo-input.neo-input:hover {
+        box-shadow:
+            3px 3px 6px #c1c6cd,
+            -3px -3px 6px #ffffff !important;
+    }
+
+    input.neo-input.neo-input:focus {
+        box-shadow:
+            inset 3px 3px 6px #c1c6cd,
+            inset -3px -3px 6px #ffffff !important;
+        background: #dde1e7 !important;
+        outline: none !important;
+        /* Убираем стандартные focus-стили */
+        border-color: transparent !important;
+        ring: none !important;
+    }
+}

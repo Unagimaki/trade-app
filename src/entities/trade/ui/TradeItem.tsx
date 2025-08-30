@@ -29,12 +29,12 @@ export default function TradeItem({ trade, index }: { trade: Trade, index: numbe
   const pnlClass = pnl > 0 ? "text-green-600" : pnl < 0 ? "text-red-600" : "text-muted-foreground";
   
   return (
-    <Card className="rounded-2xl">
+    <Card className=".neo-card rounded-2xl">
       <CardHeader className="flex-row items-center justify-between space-y-0">
         <CardTitle className="text-base">Сделка {index}</CardTitle>
         <div className="flex items-center gap-2">
           <div className="text-xs text-muted-foreground">{formatDate(trade.date)}</div>
-          <Button variant="outline" size="sm" onClick={() => dispatch(removeTrade(trade.id))}>
+          <Button variant="neo" size="sm" onClick={() => dispatch(removeTrade(trade.id))}>
             Удалить
           </Button>
         </div>
