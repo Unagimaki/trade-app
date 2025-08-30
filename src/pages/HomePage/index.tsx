@@ -1,5 +1,6 @@
 import SettingsPanel from "@/features/settings-panel/ui/SettingsPanel";
 import StatsPanel from "@/widgets/stats-panel/ui/StatsPanel";
+import ScreenshotPreview from "@/widgets/ScreenshotPreview";
 import TradesList from "@/widgets/trade-list/ui/TradeList";
 
 export default function HomePage() {
@@ -10,6 +11,7 @@ export default function HomePage() {
         <StatsPanel />
       </div>
       <TradesList />
+      <ScreenshotPreview />
     </div>
   );
 }
