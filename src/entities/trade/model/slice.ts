@@ -22,9 +22,13 @@ export const tradesListSlice = createSlice({
         },
         clearAll: (state) => {
             state.items = [];
-        }
+        },
+        setTradeImage: (state, action: PayloadAction<{ id: string; img: string | null }>) =>{
+            const t = state.items.find(x => x.id === action.payload.id);
+            if (t) t.img = action.payload.img;
+        },
     },   
 })
 
-export const { addTrade, removeTrade, clearAll } = tradesListSlice.actions;
+export const { addTrade, removeTrade, clearAll, setTradeImage } = tradesListSlice.actions;
 export default tradesListSlice.reducer;

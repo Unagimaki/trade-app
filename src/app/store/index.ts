@@ -1,6 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
 import settingsReducer from "@/entities/settings/model/slice";
 import tradesReducer from "@/entities/trade/model/slice";
+import uiReducer from "@/app/uiSlice";
+
 import { useDispatch, useSelector, type TypedUseSelectorHook } from "react-redux";
 
 
@@ -8,6 +10,7 @@ export const store = configureStore({
     reducer: {
         settings: settingsReducer,
         trades: tradesReducer,
+        ui: uiReducer
     }
 })
 
