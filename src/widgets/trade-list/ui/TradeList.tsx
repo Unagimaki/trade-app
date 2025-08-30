@@ -20,10 +20,26 @@ export default function TradesList() {
   }
 
   return (
-    <div className="space-y-3">
-      {trades.map((t, index) => (
-        <TradeItem key={t.id} trade={t} index={trades.length - index} />
-      ))}
-    </div>
+    <Card className="rounded-2xl">
+      <CardHeader>
+        <CardTitle>Сделки</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        {trades.map((trade, index) => (
+          <div
+            key={trade.id}
+            className={`
+              transition-all duration-300 ease-in-out
+              ${index === 0 ? 'animate-in fade-in slide-in-from-top-4' : ''}
+            `}
+          >
+            <TradeItem 
+              trade={trade} 
+              index={trades.length - index} // Сохраняем проп index
+            />
+          </div>
+        ))}
+      </CardContent>
+    </Card>
   );
 }
