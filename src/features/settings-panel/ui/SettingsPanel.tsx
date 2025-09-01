@@ -119,10 +119,10 @@ export default function SettingsPanel() {
 
         {/* Действия со сделками */}
         <div className="flex flex-wrap gap-2">
-          <Button variant="neo" onClick={onAddLoss}>Добавить убыток</Button>
-          <Button variant="neo" onClick={onAddWin}>Добавить прибыль</Button>
+          <Button variant="trading" onClick={onAddLoss}>Добавить убыток</Button>
+          <Button variant="trading" onClick={onAddWin}>Добавить прибыль</Button>
           <div className="grow" />
-          <Button variant="neo" onClick={() => dispatch(clearAll())}>
+          <Button variant="trading" onClick={() => dispatch(clearAll())}>
             Очистить все сделки
           </Button>
         </div>

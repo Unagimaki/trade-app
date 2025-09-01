@@ -13,6 +13,10 @@ export const selectCurrentBalance = (s: RootState) => {
   return Math.round((initial + pnlSum) * 100) / 100;
 };
 
+export const selectInitialBalance = (s: RootState) => {
+  return s.settings.initialBalance
+}
+
 // Селекторы статистики
 export const selectWinRate = createSelector([selectTrades], (trades) => {
   if (trades.length === 0) return 0;

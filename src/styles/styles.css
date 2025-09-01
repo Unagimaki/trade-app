@@ -1,0 +1,93 @@
+/* src/styles/trading.css */
+.trading-card {
+    border-radius: 12px;
+    background: #1e293b;
+    border: 1px solid #475569;
+}
+
+.trading-button {
+    border-radius: 8px;
+    background: #3b82f6;
+    color: #f8fafc;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.trading-button:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+}
+
+.trading-button:active {
+    transform: translateY(1px);
+}
+
+.trading-button:disabled {
+    background: #334155;
+    transform: none;
+}
+
+.trading-input {
+    border-radius: 8px;
+    background: #0f172a;
+    border: 1px solid #475569;
+    padding: 0.5rem 1rem;
+    color: #f8fafc;
+    transition: all 0.2s ease;
+}
+
+.trading-input:hover {
+    border-color: #3b82f6;
+}
+
+.trading-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+/* Компонентные стили */
+@layer components {
+    .trading-button {
+        border-radius: 8px;
+        background: #3b82f6;
+        color: #f8fafc;
+        border: none;
+        transition: all 0.2s ease;
+    }
+
+    .trading-button:hover {
+        background: #2563eb;
+        transform: translateY(-1px);
+    }
+
+    .trading-button:active {
+        transform: translateY(1px);
+    }
+
+    .trading-button:disabled {
+        background: #334155;
+        transform: none;
+    }
+}
+
+@layer components {
+    input.trading-input {
+        border-radius: 8px !important;
+        background: #0f172a !important;
+        border: 1px solid #475569 !important;
+        color: #f8fafc !important;
+        transition: all 0.2s ease !important;
+    }
+
+    input.trading-input:hover {
+        border-color: #3b82f6 !important;
+    }
+
+    input.trading-input:focus {
+        outline: none !important;
+        border-color: #3b82f6 !important;
+        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2) !important;
+        background: #0f172a !important;
+    }
+}
