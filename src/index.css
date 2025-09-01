@@ -1,11 +1,12 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import './styles/neumorphism.css';
+@import './styles/styles.css';
 
 body {
-    background-color: #e0e5ec;
+    background-color: #0f172a;
     font-family: 'Inter', sans-serif;
     overflow: hidden;
+    color: #f8fafc;
 }
 
 html {

@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
   "cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium " +
-    "transition-colors duration-150 disabled:pointer-events-none disabled:opacity-50 " +
+    "transition-all duration-150 disabled:pointer-events-none disabled:opacity-50 " +
     "[&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 " +
     "outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] " +
     "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
@@ -14,21 +14,22 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90 hover:scale-[1.02] active:scale-[0.98]",
+          "bg-[#3b82f6] text-[#f8fafc] border-none shadow-xs hover:bg-[#2563eb] hover:scale-[1.02] active:scale-[0.98]",
         destructive:
-          "bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60 hover:scale-[1.02] active:scale-[0.98]",
+          "bg-[#dc2626] text-white border-none shadow-xs hover:bg-[#b91c1c] focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 hover:scale-[1.02] active:scale-[0.98]",
         outline:
-          "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 hover:scale-[1.02] active:scale-[0.98]",
+          "border border-[#475569] bg-transparent text-[#f8fafc] shadow-xs hover:bg-[#334155] hover:border-[#3b82f6] dark:hover:bg-[#475569] hover:scale-[1.02] active:scale-[0.98]",
         secondary:
-          "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80 hover:scale-[1.02] active:scale-[0.98]",
+          "bg-[#334155] text-[#f8fafc] border-none shadow-xs hover:bg-[#475569] hover:scale-[1.02] active:scale-[0.98]",
         ghost:
-          "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 hover:scale-[1.02] active:scale-[0.98]",
+          "text-[#f8fafc] hover:bg-[#334155] dark:hover:bg-[#475569] hover:scale-[1.02] active:scale-[0.98]",
         link:
-          "text-primary underline-offset-4 hover:underline",
-        neo: 
-          "neo-button text-foreground font-medium " +
-          "hover:neo-button-hover active:neo-button-active " +
-          "disabled:neo-button-disabled",
+          "text-[#3b82f6] underline-offset-4 hover:underline",
+        trading:
+          "trading-button rounded-8px bg-[#3b82f6] text-[#f8fafc] border-none " +
+          "hover:bg-[#2563eb] hover:transform hover:translate-y-[-1px] " +
+          "active:transform active:translate-y-[1px] " +
+          "disabled:bg-[#334155] disabled:transform-none",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",
