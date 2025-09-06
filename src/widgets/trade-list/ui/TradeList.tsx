@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAppSelector } from "@/app/store";
 import { selectTrades } from "@/entities/trade/model/selectors";
-import TradeItem from "@/entities/trade/ui/TradeItem";
+import TradeItem from "@/features/trade-list/ui/TradeItem/TradeItem";
 
 export default function TradesList() {
   const trades = useAppSelector(selectTrades);

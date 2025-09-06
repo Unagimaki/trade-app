@@ -1,0 +1,132 @@
+import React, { useCallback, useRef } from "react";
+import { useAppDispatch } from "@/app/store";
+import { removeTrade, setTradeImage } from "@/entities/trade/model/slice";
+import { setPreviewTradeId } from "@/features/view-trade-ui/model/uiSlice";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import type { Trade } from "@/entities/trade/model/types";
+import { fileToBase64 } from "@/lib/fileToBase64";
+import { formatDate } from "@/lib/formatters/formatDate";
+
+const TradeItem = React.memo(({ trade, index }: { trade: Trade; index: number }) => {
+  const dispatch = useAppDispatch();
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  // Мемоизируем обработчики
+  const handlePickImage = useCallback(() => inputRef.current?.click(), []);
+
+  const handleFileChange = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0];
+    if (!f) return;
+
+    if (!f.type.startsWith("image/")) {
+      alert("Выберите изображение.");
+      e.target.value = "";
+      return;
+    }
+    if (f.size > 5 * 1024 * 1024) {
+      alert("Слишком большой файл (>5MB).");
+      e.target.value = "";
+      return;
+    }
+
+    try {
+      const base64 = await fileToBase64(f);
+      dispatch(setTradeImage({ id: trade.id, img: base64 }));
+    } catch (err) {
+      console.error(err);
+      alert("Не удалось прочитать файл.");
+    } finally {
+      e.target.value = "";
+    }
+  }, [dispatch, trade.id]);
+
+  const handleRemoveImage = useCallback(() => {
+    dispatch(setTradeImage({ id: trade.id, img: null }));
+  }, [dispatch, trade.id]);
+
+  const handleRemoveTrade = useCallback(() => {
+    dispatch(removeTrade(trade.id));
+  }, [dispatch, trade.id]);
+
+  const handleShowPreview = useCallback(() => {
+    dispatch(setPreviewTradeId(trade.id));
+  }, [dispatch, trade.id]);
+
+  const handleHidePreview = useCallback(() => {
+    dispatch(setPreviewTradeId(null));
+  }, [dispatch]);
+
+  return (
+    <Card className="neo-card rounded-2xl">
+      <CardHeader className="flex-row items-center justify-between space-y-0">
+        <CardTitle className="text-base">Сделка {index}</CardTitle>
+        <div className="flex items-center gap-2">
+          <div className="text-xs text-muted-foreground">{formatDate(trade.date)}</div>
+          <Button variant="trading" size="sm" onClick={handleRemoveTrade}>
+            Удалить
+          </Button>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="grid gap-2 md:grid-cols-5 text-sm">
+          {/* ... остальная разметка без изменений ... */}
+        </div>
+
+        <div className="mt-3 flex items-center gap-2 text-sm">
+          <span className="text-muted-foreground select-none flex items-center gap-1">
+            {trade.img && <span aria-hidden="true">📷</span>}
+            <span>Скриншот</span>
+          </span>
+
+          <Button
+            size="sm"
+            variant="outline"
+            className="h-7 w-7 p-0"
+            onClick={handlePickImage}
+            title="Добавить скриншот"
+          >
+            +
+          </Button>
+
+          {trade.img && (
+            <>
+              <Button
+                size="sm"
+                variant="outline"
+                className="h-7 w-7 p-0"
+                onMouseEnter={handleShowPreview}
+                onMouseLeave={handleHidePreview}
+                title="Показать скриншот"
+              >
+                👁
+              </Button>
+              <Button
+                size="sm"
+                variant="destructive"
+                className="h-7 w-7 p-0"
+                onClick={handleRemoveImage}
+                title="Удалить скриншот"
+              >
+                ×
+              </Button>
+            </>
+          )}
+
+          <input
+            ref={inputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={handleFileChange}
+          />
+        </div>
+      </CardContent>
+    </Card>
+  );
+});
+
+// Зададим отображаемое имя для удобства отладки
+TradeItem.displayName = "TradeItem";
+
+export default TradeItem;

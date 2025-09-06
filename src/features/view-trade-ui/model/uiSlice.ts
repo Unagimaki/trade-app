@@ -1,4 +1,3 @@
-// src/app/uiSlice.ts
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 type UIState = { previewTradeId: string | null };
