@@ -1,5 +1,5 @@
 import SettingsPanel from "@/features/settings-panel/ui/SettingsPanel";
-import ScreenshotPreview from "@/features/view-trade-ui/ui/ScreenshotPreview";
+import ScreenshotPreview from "@/features/view-screen-preview/ui/ScreenshotPreview";
 import { StatsPanel } from "@/widgets/stats-panel";
 import { TradesList } from "@/widgets/trade-list";
 

@@ -1,7 +1,7 @@
 import React, { useCallback, useRef } from "react";
 import { useAppDispatch } from "@/app/store";
 import { removeTrade, setTradeImage } from "@/entities/trade/model/slice";
-import { setPreviewTradeId } from "@/features/view-trade-ui/model/uiSlice";
+import { setPreviewTradeId } from "@/features/view-screen-preview/model/uiSlice";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import type { Trade } from "@/entities/trade/model/types";

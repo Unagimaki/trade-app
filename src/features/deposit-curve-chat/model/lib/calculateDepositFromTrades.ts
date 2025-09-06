@@ -49,9 +49,7 @@ export const calculateDepositFromTrades = (trades: Trade[], initialBalance: numb
       case "break-even":
         profit = 0;
         break;
-    }
-    console.log(profit);
-    
+    }    
     // Округляем profit до 2 знаков как в селекторе
     profit = Math.round(profit * 100) / 100;
     
