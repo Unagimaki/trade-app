@@ -19,14 +19,16 @@ export const Header: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           {/* Логотип и название */}
-          <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#22d3ee] to-[#0ea5e9]">
-              <span className="text-lg font-bold text-white">T</span>
+          <Link to="/">
+            <div className="flex items-center gap-2">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#22d3ee] to-[#0ea5e9]">
+                <span className="text-lg font-bold text-white">T</span>
+              </div>
+              <span className="text-xl font-bold bg-gradient-to-r from-[#22d3ee] via-[#0ea5e9] to-[#2563eb] bg-clip-text text-transparent">
+                Trader's Diary
+              </span>
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-[#22d3ee] via-[#0ea5e9] to-[#2563eb] bg-clip-text text-transparent">
-              Trader's Diary
-            </span>
-          </div>
+          </Link>
 
           {/* Навигация */}
           <NavigationMenu>
@@ -34,13 +36,13 @@ export const Header: React.FC = () => {
               <NavigationMenuItem>
                 <Button
                   asChild
-                  variant={isActive('/') ? "secondary" : "ghost"}
+                  variant={isActive('/trades') ? "secondary" : "ghost"} // ИЗМЕНИЛОСЬ: проверяем /trades
                   className={cn(
                     "transition-all duration-200 hover:bg-[#1e293b]",
-                    isActive('/') && "bg-[#1e293b] text-[#f8fafc]"
+                    isActive('/trades') && "bg-[#1e293b] text-[#f8fafc]" // ИЗМЕНИЛОСЬ: проверяем /trades
                   )}
                 >
-                  <Link to="/">
+                  <Link to="trades">
                     <span className="mr-2">📊</span>
                     Дневник
                   </Link>

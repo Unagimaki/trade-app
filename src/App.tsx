@@ -1,10 +1,10 @@
 import './App.css'
-import HomePage from './pages/HomePage'
+import { Router } from './app/providers/router'
 
 function App() {
   return (
     <>
-      <HomePage/>
+      <Router/>
     </>
   )
 }

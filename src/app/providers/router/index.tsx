@@ -1,7 +1,8 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { BaseLayout } from '@/app/layouts/base-layout';
 import { DepositCurvePage } from '@/pages/DepositCurvePage/ui/DepositCurvePage';
-import HomePage from '@/pages/HomePage';
+import { TradesListPage } from '@/pages/TradesListPage/ui/TradesListPage';
+import { LandingPage } from '@/pages/LandingPage';
 
 const router = createBrowserRouter([
   {
@@ -10,11 +11,15 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <HomePage />,
+        element: <LandingPage />,
       },
       {
         path: 'curve',
         element: <DepositCurvePage />,
+      },
+      {
+        path: 'trades',
+        element: <TradesListPage />,
       },
       {
         path: '*',
