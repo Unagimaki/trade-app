@@ -1,10 +1,9 @@
 import type { Trade } from "@/entities/trade/model/types";
-import { selectInitialBalance } from "@/entities/trade/model/selectors";
-import { useAppSelector } from "@/app/store";
 import type { DepositChartData, DepositPoint } from "../types";
 
-export const calculateDepositFromTrades = (trades: Trade[]): DepositChartData => {
-  let currentBalance = useAppSelector(selectInitialBalance)
+// Функция теперь принимает initialBalance как параметр
+export const calculateDepositFromTrades = (trades: Trade[], initialBalance: number): DepositChartData => {
+  let currentBalance = initialBalance; // Используем переданное значение
   const points: DepositPoint[] = [];
   
   let maxBalance = currentBalance;
@@ -19,7 +18,6 @@ export const calculateDepositFromTrades = (trades: Trade[]): DepositChartData =>
     profit: 0,
     tradesCount: 0
   });
-  console.log(trades);
   
   trades.forEach((trade, index) => {
     let profit = 0;
@@ -59,12 +57,13 @@ export const calculateDepositFromTrades = (trades: Trade[]): DepositChartData =>
     });
   });
 
-  const totalProfit = currentBalance - currentBalance;
-  const growthPercent = (totalProfit / currentBalance) * 100;
+  // Исправляем расчет общей прибыли
+  const totalProfit = currentBalance - initialBalance; // От начального баланса
+  const growthPercent = initialBalance !== 0 ? (totalProfit / initialBalance) * 100 : 0;
 
   return {
     points,
-    startBalance: currentBalance,
+    startBalance: initialBalance, // Используем initialBalance
     currentBalance,
     maxBalance,
     minBalance,

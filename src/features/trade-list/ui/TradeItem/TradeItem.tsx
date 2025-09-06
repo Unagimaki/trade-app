@@ -8,9 +8,22 @@ import type { Trade } from "@/entities/trade/model/types";
 import { fileToBase64 } from "@/lib/fileToBase64";
 import { formatDate } from "@/lib/formatters/formatDate";
 
+// Вспомогательные функции можно вынести в отдельный файл
+function computePnl(t: Trade) {
+  if (t.type === "win") return t.rr * t.risk;
+  if (t.type === "loss") return -t.risk;
+  return 0;
+}
+
+function formatMoney(n: number) {
+  return (Math.round(n * 100) / 100).toFixed(2);
+}
+
 const TradeItem = React.memo(({ trade, index }: { trade: Trade; index: number }) => {
   const dispatch = useAppDispatch();
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const pnl = computePnl(trade);
+  const pnlClass = pnl > 0 ? "text-green-600" : pnl < 0 ? "text-red-600" : "text-muted-foreground";
 
   // Мемоизируем обработчики
   const handlePickImage = useCallback(() => inputRef.current?.click(), []);
@@ -69,13 +82,42 @@ const TradeItem = React.memo(({ trade, index }: { trade: Trade; index: number })
         </div>
       </CardHeader>
       <CardContent>
+        {/* ВОССТАНОВЛЕННАЯ РАЗМЕТКА */}
         <div className="grid gap-2 md:grid-cols-5 text-sm">
-          {/* ... остальная разметка без изменений ... */}
+          <div>
+            <span className="opacity-60">Тип:</span>{" "}
+            <b
+              className={
+                trade.type === "win"
+                  ? "text-green-600"
+                  : trade.type === "loss"
+                  ? "text-red-600"
+                  : ""
+              }
+            >
+              {trade.type}
+            </b>
+          </div>
+          <div>
+            <span className="opacity-60">Направление:</span>{" "}
+            <b>{trade.direction ? trade.direction.toUpperCase() : "—"}</b>
+          </div>
+          <div>
+            <span className="opacity-60">RR:</span> <b>{trade.rr}</b>
+          </div>
+          <div>
+            <span className="opacity-60">Риск, ₽:</span>{" "}
+            <b>{formatMoney(trade.risk)}</b>
+          </div>
+          <div>
+            <span className="opacity-60">PnL, ₽:</span>{" "}
+            <b className={pnlClass}>{formatMoney(pnl)}</b>
+          </div>
         </div>
 
         <div className="mt-3 flex items-center gap-2 text-sm">
           <span className="text-muted-foreground select-none flex items-center gap-1">
-            {trade.img && <span aria-hidden="true">📷</span>}
+            {trade.img ? <span aria-hidden="true">📷</span> : null}
             <span>Скриншот</span>
           </span>
 
