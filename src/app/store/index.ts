@@ -13,7 +13,7 @@ import storage from 'redux-persist/lib/storage';
 
 import settingsReducer from "@/entities/settings/model/slice";
 import tradesReducer from "@/entities/trade/model/slice";
-import uiReducer from "@/app/uiSlice";
+import uiReducer from "@/features/view-trade-ui/model/uiSlice";
 
 import { useDispatch, useSelector, type TypedUseSelectorHook } from "react-redux";
 

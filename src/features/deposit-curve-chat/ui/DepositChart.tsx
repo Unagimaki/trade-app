@@ -1,4 +1,4 @@
-import type { DepositChartData } from '@/shared/lib/types';
+import type { DepositChartData } from '@/features/deposit-curve-chat/model/types';
 import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 

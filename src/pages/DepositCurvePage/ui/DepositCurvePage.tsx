@@ -1,9 +1,9 @@
 import React from 'react';
-import { DepositChart } from '@/widgets/deposit-chart/ui/DepositChart';
-import { calculateDepositFromTrades } from '@/shared/lib/depositCalculations';
+import { DepositChart } from '@/features/deposit-curve-chat/ui/DepositChart';
 import { useAppSelector } from '@/app/store';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { selectTrades } from '@/entities/trade/model/selectors';
+import { calculateDepositFromTrades } from '@/features/deposit-curve-chat/model/lib/depositCalculations';
 
 export const DepositCurvePage: React.FC = () => {
   const trades = useAppSelector(selectTrades)

@@ -1,7 +1,7 @@
 import type { Trade } from "@/entities/trade/model/types";
-import type { DepositChartData, DepositPoint } from "./types";
 import { selectInitialBalance } from "@/entities/trade/model/selectors";
 import { useAppSelector } from "@/app/store";
+import type { DepositChartData, DepositPoint } from "../types";
 
 export const calculateDepositFromTrades = (trades: Trade[]): DepositChartData => {
   let currentBalance = useAppSelector(selectInitialBalance)
