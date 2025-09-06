@@ -3,7 +3,7 @@ import { useAppSelector } from "@/app/store";
 import { selectTrades } from "@/entities/trade/model/selectors";
 import TradeItem from "@/features/trade-list/ui/TradeItem/TradeItem";
 
-export default function TradesList() {
+export function TradesList() {
   const trades = useAppSelector(selectTrades);
 
   if (!trades.length) {

@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { BaseLayout } from '@/app/layouts/base-layout';
-import App from '@/App';
 import { DepositCurvePage } from '@/pages/DepositCurvePage/ui/DepositCurvePage';
+import HomePage from '@/pages/HomePage';
 
 const router = createBrowserRouter([
   {
@@ -10,7 +10,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <App />,
+        element: <HomePage />,
       },
       {
         path: 'curve',

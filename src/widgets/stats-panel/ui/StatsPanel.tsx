@@ -8,7 +8,7 @@ import {
   selectAverageLoss
 } from "@/entities/trade/model/selectors";
 
-export default function StatsPanel() {
+export function StatsPanel() {
   const winRate = useAppSelector(selectWinRate);
   const profitFactor = useAppSelector(selectProfitFactor);
   const averageWin = useAppSelector(selectAverageWin);

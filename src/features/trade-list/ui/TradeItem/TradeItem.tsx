@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import type { Trade } from "@/entities/trade/model/types";
 import { fileToBase64 } from "@/lib/fileToBase64";
-import { formatDate } from "@/lib/formatters/formatDate";
+import { formatDate } from "@/lib/formatters";
 
 // Вспомогательные функции можно вынести в отдельный файл
 function computePnl(t: Trade) {

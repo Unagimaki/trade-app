@@ -1,7 +1,7 @@
 import SettingsPanel from "@/features/settings-panel/ui/SettingsPanel";
-import StatsPanel from "@/widgets/stats-panel/ui/StatsPanel";
 import ScreenshotPreview from "@/features/view-trade-ui/ui/ScreenshotPreview";
-import TradesList from "@/widgets/trade-list/ui/TradeList";
+import { StatsPanel } from "@/widgets/stats-panel";
+import { TradesList } from "@/widgets/trade-list";
 
 export default function HomePage() {
   return (

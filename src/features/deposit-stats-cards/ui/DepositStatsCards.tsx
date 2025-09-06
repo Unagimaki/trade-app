@@ -1,4 +1,5 @@
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { formatCurrency, formatPercent } from '@/lib/formatters';
 
 export interface DepositStatsCardsProps {
   currentBalance: number;
@@ -17,19 +18,6 @@ export const DepositStatsCards: React.FC<DepositStatsCardsProps> = ({
   maxDrawdownPercent,
   tradesCount
 }) => {
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(value);
-  };
-
-  const formatPercent = (value: number) => {
-    return `${value >= 0 ? '+' : ''}${value.toFixed(2)}%`;
-  };
-
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       <Card className="trading-card">
