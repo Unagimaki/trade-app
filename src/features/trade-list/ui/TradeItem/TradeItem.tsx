@@ -1,12 +1,13 @@
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { useAppDispatch } from "@/app/store";
-import { removeTrade, setTradeImage } from "@/entities/trade/model/slice";
+import { removeTrade, setTradeDirection, setTradeImage } from "@/entities/trade/model/slice";
 import { setPreviewTradeId } from "@/features/view-screen-preview/model/uiSlice";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import type { Trade } from "@/entities/trade/model/types";
 import { fileToBase64 } from "@/lib/fileToBase64";
-import { formatDate } from "@/lib/formatters";
+import { formatDate, formatMoney } from "@/lib/formatters";
+import { TradeItemDirectionSelect } from "./TradeItemDirectionSelect";
 
 // Вспомогательные функции можно вынести в отдельный файл
 function computePnl(t: Trade) {
@@ -15,11 +16,8 @@ function computePnl(t: Trade) {
   return 0;
 }
 
-function formatMoney(n: number) {
-  return (Math.round(n * 100) / 100).toFixed(2);
-}
-
 const TradeItem = React.memo(({ trade, index }: { trade: Trade; index: number }) => {
+  const [isDirectionMenuOpen, setIsDirectionMenuOpen] = useState(false)
   const dispatch = useAppDispatch();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const pnl = computePnl(trade);
@@ -70,6 +68,10 @@ const TradeItem = React.memo(({ trade, index }: { trade: Trade; index: number })
     dispatch(setPreviewTradeId(null));
   }, [dispatch]);
 
+  const handleDirectionSelect = useCallback((direction: 'long' | 'short' | null) => {
+    dispatch(setTradeDirection({id: trade.id, direction: direction}))
+  }, [dispatch])
+
   return (
     <Card className="neo-card rounded-2xl">
       <CardHeader className="flex-row items-center justify-between space-y-0">
@@ -82,7 +84,6 @@ const TradeItem = React.memo(({ trade, index }: { trade: Trade; index: number })
         </div>
       </CardHeader>
       <CardContent>
-        {/* ВОССТАНОВЛЕННАЯ РАЗМЕТКА */}
         <div className="grid gap-2 md:grid-cols-5 text-sm">
           <div>
             <span className="opacity-60">Тип:</span>{" "}
@@ -98,10 +99,38 @@ const TradeItem = React.memo(({ trade, index }: { trade: Trade; index: number })
               {trade.type}
             </b>
           </div>
-          <div>
-            <span className="opacity-60">Направление:</span>{" "}
-            <b>{trade.direction ? trade.direction.toUpperCase() : "—"}</b>
-          </div>
+        <div className="relative">
+          <span className="opacity-60">Направление:</span>{" "}
+          <b>
+            {trade.direction ? (
+              <div 
+                className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-blue-500/20 cursor-pointer hover:bg-blue-500/30 transition-colors"
+                onClick={() => setIsDirectionMenuOpen(true)}
+              >
+                <span>{trade.direction.toUpperCase()}</span>
+                {trade.direction === 'long' ? (
+                  <span className="text-green-400">↑</span>
+                ) : (
+                  <span className="text-red-400">↓</span>
+                )}
+              </div>
+            ) : (
+              <Button 
+                onClick={() => setIsDirectionMenuOpen(true)}
+                className="h-7 w-7 p-0 trading-button"
+              >
+                +
+              </Button>
+            )}
+            
+            {isDirectionMenuOpen && (
+              <TradeItemDirectionSelect
+                onDirectionSelect={handleDirectionSelect}
+                onClose={() => setIsDirectionMenuOpen(false)}
+              />
+            )}
+          </b>
+        </div>
           <div>
             <span className="opacity-60">RR:</span> <b>{trade.rr}</b>
           </div>
