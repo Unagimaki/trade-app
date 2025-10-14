@@ -1,54 +1,52 @@
+import { useAppDispatch } from "@/app/store";
 import { Button } from "@/components/ui/button";
 import { updateTradeField, removeTrade } from "@/entities/trade/model/slice";
-import { useAppDispatch } from "@/app/store";
 import type { Trade } from "@/entities/trade/model/types";
+import React from "react";
 
 interface TradeTableRowProps {
   trade: Trade;
-  allKeys: string[];
+  columns: string[];
 }
 
-export function TradeTableRow({ trade, allKeys }: TradeTableRowProps) {
-  const dispatch = useAppDispatch();
-  console.log(`render ${trade.id}`);
-  
-  const handleChange = (
-    field: string,
-    value: string | number | null
-  ) => {
-    dispatch(updateTradeField({ id: trade.id, field: field as any, value }));
-  };
+export const TradeTableRow = React.memo( ({ trade, columns }: TradeTableRowProps) => {
+    const dispatch = useAppDispatch();
+    
+    const handleChange = (field: string, value: string | number | null) => {
+      dispatch(updateTradeField({ id: trade.id, field: field as keyof Trade, value }));
+    };
 
-  return (
-    <tr className="border-b hover:bg-muted/40">
-      {allKeys.map((key) => {
-        const value =
-          key in trade
-            ? (trade as any)[key]
-            : trade.extra?.[key] ?? "";
+    const handleRemove = () => {
+      dispatch(removeTrade(trade.id));
+    };
 
-        return (
-          <td key={key} className="px-2 py-1">
-            <input
-              value={value ?? ""}
-              onChange={(e) =>
-                handleChange(key, e.target.value)
-              }
-              className="w-full bg-transparent outline-none border border-transparent focus:border-primary rounded-sm px-1 py-0.5"
-            />
-          </td>
-        );
-      })}
-
-      <td className="px-2 py-1 text-center">
-        <Button
-          size="sm"
-          variant="destructive"
-          onClick={() => dispatch(removeTrade(trade.id))}
-        >
-          ×
-        </Button>
-      </td>
-    </tr>
-  );
-}
+    return (
+      <tr className="border-b hover:bg-muted/40 transition-colors">
+        {columns.map((key) => {
+          const value = (trade as any)[key] ?? ""; // динамический доступ
+          return (
+            <td key={key} className="px-2 py-1 text-center">
+              <input
+                type="text"
+                className="w-full bg-transparent outline-none border border-transparent focus:border-primary rounded-sm px-1 py-0.5"
+                value={value}
+                onChange={(e) => handleChange(key, e.target.value)}
+              />
+            </td>
+          );
+        })}
+        <td className="px-2 py-1 text-center">
+          <Button
+            size="sm"
+            variant="destructive"
+            className="h-7"
+            onClick={handleRemove}
+          >
+            ×
+          </Button>
+        </td>
+      </tr>
+    );
+  },
+  (prev, next) => prev.trade === next.trade && prev.columns === next.columns
+);
