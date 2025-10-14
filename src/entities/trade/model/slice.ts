@@ -32,8 +32,28 @@ export const tradesListSlice = createSlice({
             const t = state.items.find(x => x.id === action.payload.id);
             if (t) t.img = action.payload.img;
         },
+        updateTradeField: (state, action: PayloadAction<{id: string; field: keyof Trade; value: any}>) => {
+            const { id, field, value } = action.payload;
+            const trade = state.items.find(t => t.id === id);
+            if (trade) {
+                // @ts-expect-error — т.к. field динамический, TS не сможет проверить тип значения
+                trade[field] = value;
+            }
+        },
+        addTradeColumn: (state, action: PayloadAction<string>) => {
+            const columnName = action.payload.trim();
+            if (!columnName) return;
+
+            // добавляем поле в extra каждой сделки
+            state.items.forEach((trade) => {
+                if (!trade.extra) trade.extra = {};
+                if (!(columnName in trade.extra)) {
+                    trade.extra[columnName] = null;
+                }
+            });
+        },
     },   
 })
 
-export const { addTrade, removeTrade, clearAll, setTradeImage, setTradeDirection } = tradesListSlice.actions;
+export const { addTrade, removeTrade, clearAll, setTradeImage, setTradeDirection, updateTradeField, addTradeColumn } = tradesListSlice.actions;
 export default tradesListSlice.reducer;

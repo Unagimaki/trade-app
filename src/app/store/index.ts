@@ -55,6 +55,8 @@ export const store = configureStore({
     }),
 })
 
+store.subscribe(() => {console.log(store.getState().trades.items)})
+
 export const persistor = persistStore(store);
 
 export type RootState = ReturnType<typeof store.getState>;

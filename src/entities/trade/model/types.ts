@@ -5,5 +5,6 @@ export type Trade = {
     direction?: "long" | "short" | null;
     rr: number; 
     risk: number; 
-    img?: string | null
+    img?: string | null;
+    extra?: Record<string, string | number | null>
 }

@@ -1,7 +1,8 @@
 import SettingsPanel from "@/features/settings-panel/ui/SettingsPanel";
 import ScreenshotPreview from "@/features/view-screen-preview/ui/ScreenshotPreview";
 import { StatsPanel } from "@/widgets/stats-panel";
-import { TradesList } from "@/widgets/trade-list";
+// import { TradesList } from "@/widgets/trade-list";
+import { TradesTable } from "@/widgets/trades-table/ui/TradesTable";
 
 
 export const TradesListPage = () => {
@@ -11,7 +12,7 @@ export const TradesListPage = () => {
             <SettingsPanel />
             <StatsPanel />
           </div>
-          <TradesList />
+          <TradesTable />
           <ScreenshotPreview />
         </div>
     )
