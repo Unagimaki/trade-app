@@ -1,8 +1,8 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { BaseLayout } from '@/app/layouts/base-layout';
 import { DepositCurvePage } from '@/pages/DepositCurvePage/ui/DepositCurvePage';
+import LandingMainPage from '@/pages/LandingPage/ui/LandingMainPage';
 import { TradesListPage } from '@/pages/TradesListPage/ui/TradesListPage';
-import { LandingPage } from '@/pages/LandingPage';
 
 const router = createBrowserRouter([
   {
@@ -11,7 +11,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <LandingPage />,
+        element: <LandingMainPage />,
       },
       {
         path: 'curve',
