@@ -1,7 +1,8 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+﻿import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { BaseLayout } from '@/app/layouts/base-layout';
 import { DepositCurvePage } from '@/pages/DepositCurvePage/ui/DepositCurvePage';
 import LandingMainPage from '@/pages/LandingPage/ui/LandingMainPage';
+import { TradeTablePage } from '@/pages/TradeTablePage/ui/TradeTablePage';
 import { TradesListPage } from '@/pages/TradesListPage/ui/TradesListPage';
 
 const router = createBrowserRouter([
@@ -22,8 +23,12 @@ const router = createBrowserRouter([
         element: <TradesListPage />,
       },
       {
+        path: 'trades/:tableId',
+        element: <TradeTablePage />,
+      },
+      {
         path: '*',
-        element: <div>404 - Страница не найдена</div>,
+        element: <div>404 - РЎС‚СЂР°РЅРёС†Р° РЅРµ РЅР°Р№РґРµРЅР°</div>,
       },
     ],
   },

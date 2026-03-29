@@ -14,6 +14,7 @@ import storage from 'redux-persist/lib/storage';
 import settingsReducer from "@/entities/settings/model/slice";
 import tradesReducer from "@/entities/trade/model/slice";
 import uiReducer from "@/features/view-screen-preview/model/uiSlice";
+import tablesReducer from "@/entities/table/model/slice";
 
 import { useDispatch, useSelector, type TypedUseSelectorHook } from "react-redux";
 
@@ -36,16 +37,23 @@ const uiPersistConfig = {
   whitelist: ['theme'] // сохраняем только тему, например
 };
 
+const tablesPersistConfig = {
+  key: 'tables',
+  storage,
+};
+
 // Обертываем редюсеры в persist
 const persistedTradesReducer = persistReducer(tradesPersistConfig, tradesReducer);
 const persistedSettingsReducer = persistReducer(settingsPersistConfig, settingsReducer);
 const persistedUiReducer = persistReducer(uiPersistConfig, uiReducer);
+const persistedTablesReducer = persistReducer(tablesPersistConfig, tablesReducer); 
 
 export const store = configureStore({
   reducer: {
     settings: persistedSettingsReducer,
     trades: persistedTradesReducer,
-    ui: persistedUiReducer
+    ui: persistedUiReducer,
+    tables: persistedTablesReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
