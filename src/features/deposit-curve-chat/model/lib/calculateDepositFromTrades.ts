@@ -1,8 +1,7 @@
-import type { Trade } from "@/entities/trade/model/types";
+﻿import type { Trade } from "@/entities/trade/model/types";
 import type { DepositChartData, DepositPoint } from "../types";
 
 export const calculateDepositFromTrades = (trades: Trade[], initialBalance: number): DepositChartData => {
-  // Сортируем сделки по дате (от самой старой к самой новой)
   const sortedTrades = [...trades].sort((a, b) => 
     new Date(a.date).getTime() - new Date(b.date).getTime()
   );
@@ -15,7 +14,6 @@ export const calculateDepositFromTrades = (trades: Trade[], initialBalance: numb
   let maxDrawdown = 0;
   let maxDrawdownPercent = 0;
 
-  // Если есть сделки, создаем начальную точку с датой НА 1 ДЕНЬ РАНЬШЕ первой сделки
   if (sortedTrades.length > 0) {
     const firstTradeDate = new Date(sortedTrades[0].date);
     const startDate = new Date(firstTradeDate);
@@ -41,26 +39,22 @@ export const calculateDepositFromTrades = (trades: Trade[], initialBalance: numb
     
     switch (trade.type) {
       case "win":
-        profit = trade.risk * trade.rr;
+        profit = (trade.risk ?? 0) * (trade.rr ?? 0);
         break;
       case "loss":
-        profit = -trade.risk;
+        profit = -(trade.risk ?? 0);
         break;
       case "break-even":
         profit = 0;
         break;
     }    
-    // Округляем profit до 2 знаков как в селекторе
     profit = Math.round(profit * 100) / 100;
     
-    // Округляем текущий баланс на каждом шаге
     currentBalance = Math.round((currentBalance + profit) * 100) / 100;
 
-    // Обновляем максимумы и минимумы
     maxBalance = Math.max(maxBalance, currentBalance);
     minBalance = Math.min(minBalance, currentBalance);
     
-    // Рассчитываем просадку
     const drawdown = maxBalance - currentBalance;
     const drawdownPercent = (drawdown / maxBalance) * 100;
     
@@ -83,7 +77,7 @@ export const calculateDepositFromTrades = (trades: Trade[], initialBalance: numb
   return {
     points,
     startBalance: initialBalance,
-    currentBalance, // Теперь будет точно таким же как в селекторе
+    currentBalance, 
     maxBalance: Math.round(maxBalance * 100) / 100,
     minBalance: Math.round(minBalance * 100) / 100,
     profit: Math.round(totalProfit * 100) / 100,

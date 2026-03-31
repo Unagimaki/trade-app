@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+﻿import React, { useCallback, useRef, useState } from "react";
 import { useAppDispatch } from "@/app/store";
 import { removeTrade, setTradeDirection, setTradeImage } from "@/entities/trade/model/slice";
 import { setPreviewTradeId } from "@/features/view-screen-preview/model/uiSlice";
@@ -9,10 +9,10 @@ import { fileToBase64 } from "@/lib/fileToBase64";
 import { formatDate, formatMoney } from "@/lib/formatters";
 import { TradeItemDirectionSelect } from "./TradeItemDirectionSelect";
 
-// Вспомогательные функции можно вынести в отдельный файл
+// Р’СЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Рµ С„СѓРЅРєС†РёРё РјРѕР¶РЅРѕ РІС‹РЅРµСЃС‚Рё РІ РѕС‚РґРµР»СЊРЅС‹Р№ С„Р°Р№Р»
 function computePnl(t: Trade) {
-  if (t.type === "win") return t.rr * t.risk;
-  if (t.type === "loss") return -t.risk;
+  if (t.type === "win") return (t.rr ?? 0) * (t.risk ?? 0);
+  if (t.type === "loss") return -(t.risk ?? 0);
   return 0;
 }
 
@@ -23,7 +23,7 @@ const TradeItem = React.memo(({ trade, index }: { trade: Trade; index: number })
   const pnl = computePnl(trade);
   const pnlClass = pnl > 0 ? "text-green-600" : pnl < 0 ? "text-red-600" : "text-muted-foreground";
 
-  // Мемоизируем обработчики
+  // РњРµРјРѕРёР·РёСЂСѓРµРј РѕР±СЂР°Р±РѕС‚С‡РёРєРё
   const handlePickImage = useCallback(() => inputRef.current?.click(), []);
 
   const handleFileChange = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,12 +31,12 @@ const TradeItem = React.memo(({ trade, index }: { trade: Trade; index: number })
     if (!f) return;
 
     if (!f.type.startsWith("image/")) {
-      alert("Выберите изображение.");
+      alert("Р’С‹Р±РµСЂРёС‚Рµ РёР·РѕР±СЂР°Р¶РµРЅРёРµ.");
       e.target.value = "";
       return;
     }
     if (f.size > 5 * 1024 * 1024) {
-      alert("Слишком большой файл (>5MB).");
+      alert("РЎР»РёС€РєРѕРј Р±РѕР»СЊС€РѕР№ С„Р°Р№Р» (>5MB).");
       e.target.value = "";
       return;
     }
@@ -46,7 +46,7 @@ const TradeItem = React.memo(({ trade, index }: { trade: Trade; index: number })
       dispatch(setTradeImage({ id: trade.id, img: base64 }));
     } catch (err) {
       console.error(err);
-      alert("Не удалось прочитать файл.");
+      alert("РќРµ СѓРґР°Р»РѕСЃСЊ РїСЂРѕС‡РёС‚Р°С‚СЊ С„Р°Р№Р».");
     } finally {
       e.target.value = "";
     }
@@ -75,18 +75,18 @@ const TradeItem = React.memo(({ trade, index }: { trade: Trade; index: number })
   return (
     <Card className="neo-card rounded-2xl">
       <CardHeader className="flex-row items-center justify-between space-y-0">
-        <CardTitle className="text-base">Сделка {index}</CardTitle>
+        <CardTitle className="text-base">РЎРґРµР»РєР° {index}</CardTitle>
         <div className="flex items-center gap-2">
           <div className="text-xs text-muted-foreground">{formatDate(trade.date)}</div>
           <Button variant="trading" size="sm" onClick={handleRemoveTrade}>
-            Удалить
+            РЈРґР°Р»РёС‚СЊ
           </Button>
         </div>
       </CardHeader>
       <CardContent>
         <div className="grid gap-2 md:grid-cols-5 text-sm">
           <div>
-            <span className="opacity-60">Тип:</span>{" "}
+            <span className="opacity-60">РўРёРї:</span>{" "}
             <b
               className={
                 trade.type === "win"
@@ -100,7 +100,7 @@ const TradeItem = React.memo(({ trade, index }: { trade: Trade; index: number })
             </b>
           </div>
         <div className="relative">
-          <span className="opacity-60">Направление:</span>{" "}
+          <span className="opacity-60">РќР°РїСЂР°РІР»РµРЅРёРµ:</span>{" "}
           <b>
             {trade.direction ? (
               <div 
@@ -109,9 +109,9 @@ const TradeItem = React.memo(({ trade, index }: { trade: Trade; index: number })
               >
                 <span>{trade.direction.toUpperCase()}</span>
                 {trade.direction === 'long' ? (
-                  <span className="text-green-400">↑</span>
+                  <span className="text-green-400">в†‘</span>
                 ) : (
-                  <span className="text-red-400">↓</span>
+                  <span className="text-red-400">в†“</span>
                 )}
               </div>
             ) : (
@@ -132,22 +132,22 @@ const TradeItem = React.memo(({ trade, index }: { trade: Trade; index: number })
           </b>
         </div>
           <div>
-            <span className="opacity-60">RR:</span> <b>{trade.rr}</b>
+            <span className="opacity-60">RR:</span> <b>{trade.rr ?? "—"}</b>
           </div>
           <div>
-            <span className="opacity-60">Риск, ₽:</span>{" "}
-            <b>{formatMoney(trade.risk)}</b>
+            <span className="opacity-60">Р РёСЃРє, в‚Ѕ:</span>{" "}
+            <b>{typeof trade.risk === "number" ? formatMoney(trade.risk) : "—"}</b>
           </div>
           <div>
-            <span className="opacity-60">PnL, ₽:</span>{" "}
+            <span className="opacity-60">PnL, в‚Ѕ:</span>{" "}
             <b className={pnlClass}>{formatMoney(pnl)}</b>
           </div>
         </div>
 
         <div className="mt-3 flex items-center gap-2 text-sm">
           <span className="text-muted-foreground select-none flex items-center gap-1">
-            {trade.img ? <span aria-hidden="true">📷</span> : null}
-            <span>Скриншот</span>
+            {trade.img ? <span aria-hidden="true">рџ“·</span> : null}
+            <span>РЎРєСЂРёРЅС€РѕС‚</span>
           </span>
 
           <Button
@@ -155,7 +155,7 @@ const TradeItem = React.memo(({ trade, index }: { trade: Trade; index: number })
             variant="outline"
             className="h-7 w-7 p-0"
             onClick={handlePickImage}
-            title="Добавить скриншот"
+            title="Р”РѕР±Р°РІРёС‚СЊ СЃРєСЂРёРЅС€РѕС‚"
           >
             +
           </Button>
@@ -168,18 +168,18 @@ const TradeItem = React.memo(({ trade, index }: { trade: Trade; index: number })
                 className="h-7 w-7 p-0"
                 onMouseEnter={handleShowPreview}
                 onMouseLeave={handleHidePreview}
-                title="Показать скриншот"
+                title="РџРѕРєР°Р·Р°С‚СЊ СЃРєСЂРёРЅС€РѕС‚"
               >
-                👁
+                рџ‘Ѓ
               </Button>
               <Button
                 size="sm"
                 variant="destructive"
                 className="h-7 w-7 p-0"
                 onClick={handleRemoveImage}
-                title="Удалить скриншот"
+                title="РЈРґР°Р»РёС‚СЊ СЃРєСЂРёРЅС€РѕС‚"
               >
-                ×
+                Г—
               </Button>
             </>
           )}
@@ -197,7 +197,7 @@ const TradeItem = React.memo(({ trade, index }: { trade: Trade; index: number })
   );
 });
 
-// Зададим отображаемое имя для удобства отладки
+// Р—Р°РґР°РґРёРј РѕС‚РѕР±СЂР°Р¶Р°РµРјРѕРµ РёРјСЏ РґР»СЏ СѓРґРѕР±СЃС‚РІР° РѕС‚Р»Р°РґРєРё
 TradeItem.displayName = "TradeItem";
 
 export default TradeItem;
