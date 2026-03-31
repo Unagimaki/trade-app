@@ -9,20 +9,25 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { selectTables } from "@/entities/table/model/selectors";
-import { createTable } from "@/entities/table/model/slice";
+import { createTable, removeTable } from "@/entities/table/model/slice";
 import { useRouter } from "@/shared/hooks/use-router";
 
 export function TablesListWidget() {
   const dispatch = useAppDispatch();
   const { navigate } = useRouter();
   const tables = useAppSelector(selectTables);
-
+  console.log(tables);
+  
   const handleCreateTable = () => {
     dispatch(createTable());
   };
 
   const handleOpenTable = (tableId: string) => {
     navigate(`/trades/${tableId}`);
+  };
+
+  const handleRemoveTable = (tableId: string) => {
+    dispatch(removeTable(tableId));
   };
 
   return (
@@ -50,25 +55,23 @@ export function TablesListWidget() {
           </div>
         ) : (
           tables.map((table) => (
-            <button
+            <div
               key={table.id}
-              type="button"
               className="w-full rounded-xl border border-[#475569] bg-[#0f172a]/70 px-4 py-4 text-left transition-colors hover:border-[#3b82f6] hover:bg-[#111c31]"
-              onClick={() => handleOpenTable(table.id)}
             >
               <div className="flex items-start justify-between gap-4">
-                <div className="min-w-0">
+                <button type="button" className="min-w-0 text-left" onClick={() => handleOpenTable(table.id)}>
                   <div className="text-base font-semibold text-[#f8fafc]">{table.name}</div>
                   <p className="mt-1 text-sm text-slate-400">
-                    {table.columns.length} cols • {table.trades.length} rows
+                    {table.columns?.length} cols • {table.rows?.length} rows
                   </p>
+                </button>
+                <div className="flex flex-col">
+                  <button className="cursor-pointer text-gray-100 hover:text-gray-600" onClick={() => handleOpenTable(table.id)}>Open</button>
+                  <button className="cursor-pointer text-gray-100 hover:text-gray-600" onClick={() => handleRemoveTable(table.id)}>Remove</button>
                 </div>
-
-                <span className="shrink-0 text-xs uppercase tracking-[0.2em] text-[#60a5fa]">
-                  Open
-                </span>
               </div>
-            </button>
+            </div>
           ))
         )}
       </CardContent>

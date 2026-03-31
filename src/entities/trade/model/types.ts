@@ -14,3 +14,4 @@ export type Trade = {
   imgs?: string[] | null;
   extra?: TradeExtraFields;
 };
+
