@@ -1,67 +1,29 @@
 ﻿import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { Trade, TradeExtraValue } from "@/entities/trade/model/types";
 import { generateId } from "@/shared/lib/generateId";
-import type { Table, TableColumn, TableState } from "./types";
+import type { Table, TableCellValue, TableColumn, TableRow, TableState } from "./types";
 
 const defaultColumns: TableColumn[] = [
-  { key: "type", label: "Type" },
-  { key: "direction", label: "Direction" },
-  { key: "rr", label: "RR", kind: "number" },
-  { key: "risk", label: "Risk", kind: "number" },
-  { key: "date", label: "Date" },
-  { key: "img", label: "Image", kind: "image" },
+  { key: "type", label: "Type", role: "tradeType" },
+  { key: "direction", label: "Direction", role: "direction" },
+  { key: "rr", label: "RR", kind: "number", role: "rr" },
+  { key: "risk", label: "Risk", kind: "number", role: "risk" },
+  { key: "date", label: "Date", role: "date" },
+  { key: "img", label: "Image", kind: "image", role: "image" },
 ];
 
 const initialState: TableState = {
   tables: [],
 };
 
-const baseTradeFields = new Set(["id", "date", "type", "direction", "rr", "risk", "img", "imgs", "extra"]);
-
-function createEmptyTrade(): Trade {
+function createEmptyRow(table: Table): TableRow {
   return {
     id: generateId(),
-    date: new Date().toISOString(),
-    type: undefined,
-    direction: null,
-    rr: undefined,
-    risk: undefined,
-    img: null,
-    imgs: null,
-    extra: {},
+    values: Object.fromEntries(table.columns.map((column) => [column.key, null])),
   };
 }
 
 function getTable(state: TableState, tableId: string) {
   return state.tables.find((table) => table.id === tableId);
-}
-
-function setTradeValue(trade: Trade, field: string, value: TradeExtraValue) {
-  if (baseTradeFields.has(field)) {
-    switch (field) {
-      case "date":
-        trade.date = typeof value === "string" ? value : trade.date;
-        return;
-      case "type":
-        trade.type = value === "win" || value === "loss" || value === "break-even" ? value : undefined;
-        return;
-      case "direction":
-        trade.direction = value === "long" || value === "short" || value === null ? value : null;
-        return;
-      case "rr":
-      case "risk":
-        trade[field] = typeof value === "number" ? value : value === null || value === "" ? undefined : Number(value);
-        return;
-      case "img":
-        trade.img = typeof value === "string" || value === null ? value : null;
-        return;
-      default:
-        return;
-    }
-  }
-
-  trade.extra = trade.extra ?? {};
-  trade.extra[field] = value;
 }
 
 export const tablesListSlice = createSlice({
@@ -75,42 +37,52 @@ export const tablesListSlice = createSlice({
         id: generateId(),
         name: `Таблица ${nextIndex}`,
         columns: [...defaultColumns],
-        trades: [],
+        rows: [],
       });
     },
     addTable: (state, action: PayloadAction<Omit<Table, "id">>) => {
       state.tables.unshift({ ...action.payload, id: generateId() });
     },
     removeTable: (state, action: PayloadAction<string>) => {
-      state.tables = state.tables.filter((t) => t.id !== action.payload);
+      state.tables = state.tables.filter((table) => table.id !== action.payload);
     },
     renameTable: (state, action: PayloadAction<{ id: string; name: string }>) => {
-      const table = state.tables.find((t) => t.id === action.payload.id);
+      const table = state.tables.find((item) => item.id === action.payload.id);
       if (table) table.name = action.payload.name;
     },
     addTableRow: (state, action: PayloadAction<{ tableId: string }>) => {
       const table = getTable(state, action.payload.tableId);
       if (!table) return;
-      table.trades.unshift(createEmptyTrade());
+
+      table.rows.unshift(createEmptyRow(table));
     },
-    removeTableRow: (state, action: PayloadAction<{ tableId: string; tradeId: string }>) => {
+    removeTableRow: (state, action: PayloadAction<{ tableId: string; rowId: string }>) => {
       const table = getTable(state, action.payload.tableId);
       if (!table) return;
-      table.trades = table.trades.filter((trade) => trade.id !== action.payload.tradeId);
+      table.rows = table.rows.filter((row) => row.id !== action.payload.rowId);
     },
     updateTableCell: (
       state,
-      action: PayloadAction<{ tableId: string; tradeId: string; field: string; value: TradeExtraValue }>
+      action: PayloadAction<{ tableId: string; rowId: string; field: string; value: TableCellValue }>
     ) => {
       const table = getTable(state, action.payload.tableId);
       if (!table) return;
 
-      const trade = table.trades.find((row) => row.id === action.payload.tradeId);
-      if (!trade) return;
+      const row = table.rows.find((item) => item.id === action.payload.rowId);
+      if (!row) return;
 
-      setTradeValue(trade, action.payload.field, action.payload.value);
+      row.values[action.payload.field] = action.payload.value;
     },
-    addTableColumn: (state, action: PayloadAction<{ tableId: string; key: string; label?: string; kind?: TableColumn["kind"] }>) => {
+    addTableColumn: (
+      state,
+      action: PayloadAction<{
+        tableId: string;
+        key: string;
+        label?: string;
+        kind?: TableColumn["kind"];
+        role?: TableColumn["role"];
+      }>
+    ) => {
       const table = getTable(state, action.payload.tableId);
       if (!table) return;
 
@@ -121,6 +93,33 @@ export const tablesListSlice = createSlice({
         key,
         label: action.payload.label?.trim() || key,
         kind: action.payload.kind,
+        role: action.payload.role ?? "custom",
+      });
+
+      table.rows.forEach((row) => {
+        row.values[key] = null;
+      });
+    },
+    setTableColumnImage: (
+      state,
+      action: PayloadAction<{ tableId: string; columnKey: string }>
+    ) => {
+      const table = getTable(state, action.payload.tableId);
+      if (!table) return;
+
+      const column = table.columns.find((item) => item.key === action.payload.columnKey);
+      if (!column) return;
+
+      column.kind = "image";
+      column.role = "image";
+    },
+    removeTableColumn: (state, action: PayloadAction<{ tableId: string; columnKey: string }>) => {
+      const table = getTable(state, action.payload.tableId);
+      if (!table) return;
+
+      table.columns = table.columns.filter((column) => column.key !== action.payload.columnKey);
+      table.rows.forEach((row) => {
+        delete row.values[action.payload.columnKey];
       });
     },
   },
@@ -135,5 +134,7 @@ export const {
   removeTableRow,
   updateTableCell,
   addTableColumn,
+  setTableColumnImage,
+  removeTableColumn,
 } = tablesListSlice.actions;
 export default tablesListSlice.reducer;
