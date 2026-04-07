@@ -21,11 +21,16 @@ export type TableRow = {
   values: Record<string, TableCellValue>;
 };
 
-export type Table = {
+export type TableViewSettings = {
+  wrapText: boolean;
+};
+
+export type Table = { 
   id: string;
   name: string;
   columns: TableColumn[];
   rows: TableRow[];
+  view: TableViewSettings;
 };
 
 export type TableState = {
