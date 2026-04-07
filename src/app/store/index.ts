@@ -1,4 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
+﻿import { configureStore } from "@reduxjs/toolkit";
 import {
   persistStore,
   persistReducer,
@@ -8,52 +8,29 @@ import {
   PERSIST,
   PURGE,
   REGISTER,
-} from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
-
-import settingsReducer from "@/entities/settings/model/slice";
-import tradesReducer from "@/entities/trade/model/slice";
-import uiReducer from "@/features/view-screen-preview/model/uiSlice";
+} from "redux-persist";
+import storage from "redux-persist/lib/storage";
 import tablesReducer from "@/entities/table/model/slice";
-
+import uiReducer from "@/features/view-screen-preview/model/uiSlice";
 import { useDispatch, useSelector, type TypedUseSelectorHook } from "react-redux";
 
-// Конфигурация persist для каждого редюсера
-const tradesPersistConfig = {
-  key: 'trades',
-  storage,
-  whitelist: ['items'] // сохраняем только items из trades
-};
-
-const settingsPersistConfig = {
-  key: 'settings', 
-  storage,
-  // сохраняем все настройки
-};
-
 const uiPersistConfig = {
-  key: 'ui',
+  key: "ui",
   storage,
-  whitelist: ['theme'] // сохраняем только тему, например
 };
 
 const tablesPersistConfig = {
-  key: 'tables',
+  key: "tables",
   storage,
 };
 
-// Обертываем редюсеры в persist
-const persistedTradesReducer = persistReducer(tradesPersistConfig, tradesReducer);
-const persistedSettingsReducer = persistReducer(settingsPersistConfig, settingsReducer);
 const persistedUiReducer = persistReducer(uiPersistConfig, uiReducer);
-const persistedTablesReducer = persistReducer(tablesPersistConfig, tablesReducer); 
+const persistedTablesReducer = persistReducer(tablesPersistConfig, tablesReducer);
 
 export const store = configureStore({
   reducer: {
-    settings: persistedSettingsReducer,
-    trades: persistedTradesReducer,
     ui: persistedUiReducer,
-    tables: persistedTablesReducer
+    tables: persistedTablesReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -61,7 +38,7 @@ export const store = configureStore({
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
     }),
-})
+});
 
 export const persistor = persistStore(store);
 

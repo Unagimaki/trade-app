@@ -8,7 +8,6 @@ const defaultColumns: TableColumn[] = [
   { key: "rr", label: "RR", kind: "number", role: "rr" },
   { key: "risk", label: "Risk", kind: "number", role: "risk" },
   { key: "date", label: "Date", role: "date" },
-  { key: "img", label: "Image", kind: "image", role: "image" },
 ];
 
 const initialState: TableState = {
@@ -38,6 +37,9 @@ export const tablesListSlice = createSlice({
         name: `Таблица ${nextIndex}`,
         columns: [...defaultColumns],
         rows: [],
+        view: {
+          wrapText: false,
+        },
       });
     },
     addTable: (state, action: PayloadAction<Omit<Table, "id">>) => {
@@ -50,11 +52,27 @@ export const tablesListSlice = createSlice({
       const table = state.tables.find((item) => item.id === action.payload.id);
       if (table) table.name = action.payload.name;
     },
+    toggleTableWrapText: (state, action: PayloadAction<{ tableId: string }>) => {
+      const table = getTable(state, action.payload.tableId);
+      if (!table) return;
+
+      table.view.wrapText = !table.view.wrapText;
+    },
+    importTableData: (
+      state,
+      action: PayloadAction<{ tableId: string; columns: TableColumn[]; rows: TableRow[] }>
+    ) => {
+      const table = getTable(state, action.payload.tableId);
+      if (!table) return;
+
+      table.columns = action.payload.columns;
+      table.rows = action.payload.rows;
+    },
     addTableRow: (state, action: PayloadAction<{ tableId: string }>) => {
       const table = getTable(state, action.payload.tableId);
       if (!table) return;
 
-      table.rows.unshift(createEmptyRow(table));
+      table.rows.push(createEmptyRow(table));
     },
     removeTableRow: (state, action: PayloadAction<{ tableId: string; rowId: string }>) => {
       const table = getTable(state, action.payload.tableId);
@@ -100,18 +118,18 @@ export const tablesListSlice = createSlice({
         row.values[key] = null;
       });
     },
-    setTableColumnImage: (
+    renameTableColumn: (
       state,
-      action: PayloadAction<{ tableId: string; columnKey: string }>
+      action: PayloadAction<{ tableId: string; columnKey: string; label: string }>
     ) => {
       const table = getTable(state, action.payload.tableId);
       if (!table) return;
 
       const column = table.columns.find((item) => item.key === action.payload.columnKey);
-      if (!column) return;
+      const nextLabel = action.payload.label.trim();
+      if (!column || !nextLabel) return;
 
-      column.kind = "image";
-      column.role = "image";
+      column.label = nextLabel;
     },
     removeTableColumn: (state, action: PayloadAction<{ tableId: string; columnKey: string }>) => {
       const table = getTable(state, action.payload.tableId);
@@ -130,11 +148,13 @@ export const {
   addTable,
   removeTable,
   renameTable,
+  toggleTableWrapText,
+  importTableData,
   addTableRow,
   removeTableRow,
   updateTableCell,
   addTableColumn,
-  setTableColumnImage,
+  renameTableColumn,
   removeTableColumn,
 } = tablesListSlice.actions;
 export default tablesListSlice.reducer;
